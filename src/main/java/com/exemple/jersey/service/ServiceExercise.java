@@ -1,21 +1,29 @@
 package com.exemple.jersey.service;
 
+import com.exemple.jersey.Application;
 import com.exemple.jersey.model.Exercise;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ServiceExercise {
-    public List<Exercise> getAllExercises() {
-        Exercise ex1 = new Exercise(1,"Un test");
-        Exercise ex2 = new Exercise(2,"Un autre test");
-        Exercise ex3 = new Exercise(123456,"Un dernier test");
+    public Collection<Exercise> getAllExercises() {
+        return Application.getExerciseList();
+    }
 
-        List<Exercise> exercises = new ArrayList<Exercise>();
-        exercises.add(ex1);
-        exercises.add(ex2);
-        exercises.add(ex3);
+    public void addExercise(Exercise exercise) {
+        Application.addExercise(exercise);
+    }
 
-        return exercises;
+    public boolean deleteExercise(long id) {
+        Exercise ex = Application.getExercise(id);
+        if(ex == null) return false;
+        Application.deleteExercise(ex);
+        return true;
+    }
+
+    public Exercise getExercise(long id) {
+        return Application.getExercise(id);
     }
 }
