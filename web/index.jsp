@@ -11,6 +11,6 @@
   <title>Simple Jersey</title>
 </head>
 <body>
-<p><a href="rest/hello">Jersey resource</a>
+<p><a href="rest/exercises">Exercises</a>
 </body>
 </html>

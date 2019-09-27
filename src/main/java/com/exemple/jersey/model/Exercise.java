@@ -1,4 +1,4 @@
-package com.exemple.jersey;
+package com.exemple.jersey.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
