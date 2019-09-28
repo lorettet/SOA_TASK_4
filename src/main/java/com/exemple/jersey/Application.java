@@ -13,9 +13,13 @@ public class Application {
         Application.exerciseList = new HashMap<Long, Exercise>();
         Application.userList = new HashMap<Long, User>();
 
-        Exercise ex1 = new Exercise("Un test", ExerciseCategory.WEIGTH_LOSS);
-        Exercise ex2 = new Exercise("Un autre test", ExerciseCategory.WEIGTH_GAIN);
-        Exercise ex3 = new Exercise("Un dernier test", ExerciseCategory.SECHE);
+        User user1 = new User("Théo","LF", "lorettet","1234");
+
+        Application.addUser(user1);
+
+        Exercise ex1 = new Exercise("Un test", ExerciseCategory.WEIGTH_LOSS, user1);
+        Exercise ex2 = new Exercise("Un autre test", ExerciseCategory.WEIGTH_GAIN, user1);
+        Exercise ex3 = new Exercise("Un dernier test", ExerciseCategory.SECHE, user1);
 
         Application.addExercise(ex1);
         Application.addExercise(ex2);
@@ -38,9 +42,10 @@ public class Application {
         return userList.values();
     }
 
-    public static void addUser(User user){
+    public static User addUser(User user){
         user.setId(Application.userList.size()+1);
         Application.userList.put(user.getId(), user);
+        return user;
     }
 
     public static Exercise addExercise(Exercise exercise){
@@ -57,5 +62,12 @@ public class Application {
     public static Exercise updateExercise(Exercise ex) {
         Application.exerciseList.put(ex.getId(),ex);
         return ex;
+    }
+
+    public static User getUser(String login, String password) {
+        for(User u : Application.getUserList()){
+            if(u.getLogin().equals(login) && u.getPassword().equals(password)) return u;
+        }
+        return null;
     }
 }

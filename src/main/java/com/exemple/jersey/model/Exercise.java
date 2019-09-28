@@ -7,12 +7,14 @@ public class Exercise {
     Long id;
     String name;
     ExerciseCategory category;
+    User author;
 
     public Exercise(){}
 
-    public Exercise(String name, ExerciseCategory cat) {
+    public Exercise(String name, ExerciseCategory category, User author) {
         this.name = name;
-        this.category = cat;
+        this.category = category;
+        this.author = author;
     }
 
     public Long getId() {
@@ -37,5 +39,13 @@ public class Exercise {
 
     public void setCategory(ExerciseCategory category) {
         this.category = category;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

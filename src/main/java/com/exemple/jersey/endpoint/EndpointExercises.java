@@ -2,8 +2,10 @@ package com.exemple.jersey.endpoint;
 
 import com.exemple.jersey.exception.InvalidExerciseCategoryException;
 import com.exemple.jersey.exception.MissingArgumentException;
+import com.exemple.jersey.filter.Logged;
 import com.exemple.jersey.model.Exercise;
 import com.exemple.jersey.model.ExerciseCategory;
+import com.exemple.jersey.model.User;
 import com.exemple.jersey.service.ServiceExercise;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -11,6 +13,8 @@ import com.google.gson.JsonParser;
 import org.glassfish.jersey.jaxb.internal.XmlJaxbElementProvider;
 
 import javax.json.JsonArray;
+import javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -25,6 +29,8 @@ import java.util.List;
 public class EndpointExercises {
 
     private ServiceExercise serviceExercise = new ServiceExercise();
+
+    @Context HttpServletRequest req;
 
     @GET
     public Collection<Exercise> getAllExercises(@QueryParam("category") ExerciseCategory category)
@@ -49,8 +55,11 @@ public class EndpointExercises {
     }
 
     @PUT
+    @Logged
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addExercise(Exercise ex) {
+        User user = (User) req.getSession().getAttribute("user");
+        ex.setAuthor(user);
         if(ex.getName() == null)
         {
             throw new MissingArgumentException("name");
@@ -63,8 +72,11 @@ public class EndpointExercises {
     }
 
     @POST
+    @Logged
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateExercise(Exercise ex) {
+        User user = (User) req.getSession().getAttribute("user");
+        ex.setAuthor(user);
         if(ex.getId() == null)
         {
             throw new MissingArgumentException("id");
@@ -73,6 +85,7 @@ public class EndpointExercises {
     }
 
     @DELETE
+    @Logged
     @Path("/{id}")
     public Response deleteExercise(@PathParam("id") long id){
         if(serviceExercise.deleteExercise(id))
