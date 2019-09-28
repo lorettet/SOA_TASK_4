@@ -1,13 +1,11 @@
 package com.exemple.jersey;
 
 import com.exemple.jersey.model.Exercise;
+import com.exemple.jersey.model.ExerciseCategory;
 import com.exemple.jersey.model.User;
-import org.glassfish.jersey.jaxb.internal.XmlJaxbElementProvider;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 public class Application {
 
@@ -15,9 +13,9 @@ public class Application {
         Application.exerciseList = new HashMap<Long, Exercise>();
         Application.userList = new HashMap<Long, User>();
 
-        Exercise ex1 = new Exercise("Un test");
-        Exercise ex2 = new Exercise("Un autre test");
-        Exercise ex3 = new Exercise("Un dernier test");
+        Exercise ex1 = new Exercise("Un test", ExerciseCategory.WEIGTH_LOSS);
+        Exercise ex2 = new Exercise("Un autre test", ExerciseCategory.WEIGTH_GAIN);
+        Exercise ex3 = new Exercise("Un dernier test", ExerciseCategory.SECHE);
 
         Application.addExercise(ex1);
         Application.addExercise(ex2);
@@ -45,13 +43,19 @@ public class Application {
         Application.userList.put(user.getId(), user);
     }
 
-    public static void addExercise(Exercise exercise){
-        exercise.setId(Application.exerciseList.size()+1);
+    public static Exercise addExercise(Exercise exercise){
+        exercise.setId((long) (Application.exerciseList.size()+1));
         Application.exerciseList.put(exercise.getId(), exercise);
+        return exercise;
     }
 
     public static void deleteExercise(Exercise exercise)
     {
         Application.exerciseList.remove(exercise.getId());
+    }
+
+    public static Exercise updateExercise(Exercise ex) {
+        Application.exerciseList.put(ex.getId(),ex);
+        return ex;
     }
 }

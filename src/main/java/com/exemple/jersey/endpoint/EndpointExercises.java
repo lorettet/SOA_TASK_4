@@ -1,14 +1,21 @@
 package com.exemple.jersey.endpoint;
 
+import com.exemple.jersey.exception.InvalidExerciseCategoryException;
+import com.exemple.jersey.exception.MissingArgumentException;
 import com.exemple.jersey.model.Exercise;
+import com.exemple.jersey.model.ExerciseCategory;
 import com.exemple.jersey.service.ServiceExercise;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.glassfish.jersey.jaxb.internal.XmlJaxbElementProvider;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.json.JsonArray;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.List;
@@ -20,8 +27,13 @@ public class EndpointExercises {
     private ServiceExercise serviceExercise = new ServiceExercise();
 
     @GET
-    public Collection<Exercise> getAllExercises()
+    public Collection<Exercise> getAllExercises(@QueryParam("category") ExerciseCategory category)
     {
+
+        if(category != null)
+        {
+            return serviceExercise.getAllExercises(category);
+        }
         return serviceExercise.getAllExercises();
     }
 
@@ -34,5 +46,47 @@ public class EndpointExercises {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok().entity(ex).build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addExercise(Exercise ex) {
+        if(ex.getName() == null)
+        {
+            throw new MissingArgumentException("name");
+        }
+        if(ex.getCategory() == null)
+        {
+            throw new InvalidExerciseCategoryException("null");
+        }
+        return Response.ok().entity(serviceExercise.addExercise(ex)).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateExercise(Exercise ex) {
+        if(ex.getId() == null)
+        {
+            throw new MissingArgumentException("id");
+        }
+        return Response.ok().entity(serviceExercise.updateExercise(ex)).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteExercise(@PathParam("id") long id){
+        if(serviceExercise.deleteExercise(id))
+        {
+            return Response.ok().build();
+        }else{
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @GET
+    @Path("/category")
+    public ExerciseCategory[] getAllCategory()
+    {
+        return ExerciseCategory.values();
     }
 }

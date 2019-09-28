@@ -4,20 +4,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Exercise {
-    long id;
+    Long id;
     String name;
+    ExerciseCategory category;
 
     public Exercise(){}
 
-    public Exercise(String name) {
+    public Exercise(String name, ExerciseCategory cat) {
         this.name = name;
+        this.category = cat;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -27,5 +29,13 @@ public class Exercise {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ExerciseCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ExerciseCategory category) {
+        this.category = category;
     }
 }
