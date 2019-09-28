@@ -6,7 +6,6 @@ import com.exemple.jersey.model.ExerciseCategory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class ServiceExercise {
     public Collection<Exercise> getAllExercises() {

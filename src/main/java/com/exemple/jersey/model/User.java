@@ -9,8 +9,19 @@ public class User {
     private String login;
     private String password;
     private long id;
+    private long age;
+    private int weight;
+    private UserSex sex;
 
-    public User() {}
+    public User(String firstname, String lastname, long age, int weight, UserSex sex, String login, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.age = age;
+        this.weight = weight;
+        this.sex = sex;
+        this.login = login;
+        this.password = password;
+    }
 
     public User(String firstname, String lastname, String login, String password) {
         this.firstname = firstname;
@@ -18,6 +29,8 @@ public class User {
         this.login = login;
         this.password = password;
     }
+
+    public User(){}
 
     public String getFirstname() {
         return firstname;
@@ -41,6 +54,30 @@ public class User {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getAge() {
+        return age;
+    }
+
+    public void setAge(long age) {
+        this.age = age;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public UserSex getSex() {
+        return sex;
+    }
+
+    public void setSex(UserSex sex) {
+        this.sex = sex;
     }
 
     public String getLogin() {

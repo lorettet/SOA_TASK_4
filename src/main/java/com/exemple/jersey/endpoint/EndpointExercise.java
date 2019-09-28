@@ -7,26 +7,17 @@ import com.exemple.jersey.model.Exercise;
 import com.exemple.jersey.model.ExerciseCategory;
 import com.exemple.jersey.model.User;
 import com.exemple.jersey.service.ServiceExercise;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.glassfish.jersey.jaxb.internal.XmlJaxbElementProvider;
 
-import javax.json.JsonArray;
-import javax.servlet.annotation.ServletSecurity;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
-import java.util.List;
 
-@Path("/exercises")
+@Path("/exercise")
 @Produces(MediaType.APPLICATION_JSON)
-public class EndpointExercises {
+public class EndpointExercise {
 
     private ServiceExercise serviceExercise = new ServiceExercise();
 
