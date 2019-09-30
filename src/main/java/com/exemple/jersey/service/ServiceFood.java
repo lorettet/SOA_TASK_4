@@ -28,6 +28,10 @@ public class ServiceFood {
         return Application.getFood(id);
     }
 
+    public Food getFoodByName(String name) {
+        return Application.getFoodByName(name);
+    }
+
     public Food updateExercise(Food food) {
         return Application.updateFood(food);
     }
