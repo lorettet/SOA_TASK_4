@@ -2,6 +2,7 @@ package com.exemple.jersey.endpoint;
 
 import com.exemple.jersey.exception.InvalidExerciseCategoryException;
 import com.exemple.jersey.exception.MissingArgumentException;
+import com.exemple.jersey.exception.UnknownFoodException;
 import com.exemple.jersey.filter.Logged;
 import com.exemple.jersey.model.Exercise;
 import com.exemple.jersey.model.ExerciseCategory;
@@ -13,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 
 @Path("/exercise")
@@ -92,5 +94,22 @@ public class EndpointExercise {
     public ExerciseCategory[] getAllCategory()
     {
         return ExerciseCategory.values();
+    }
+
+
+    @PUT
+    @Logged
+    @Path("/{exerciseId}/food/{foodId}")
+    public Exercise addFood(@PathParam("exerciseId") long exerciseId, @PathParam("foodId") long foodId, @Context UriInfo uriInfo)
+    {
+        return serviceExercise.addFood(exerciseId, foodId, uriInfo);
+    }
+
+    @DELETE
+    @Logged
+    @Path("/{exerciseId}/food/{foodId}")
+    public Exercise deleteFood(@PathParam("exerciseId") long exerciseId, @PathParam("foodId") long foodId)
+    {
+        return serviceExercise.deleteFood(exerciseId, foodId);
     }
 }

@@ -1,9 +1,15 @@
 package com.exemple.jersey.service;
 
 import com.exemple.jersey.Application;
+import com.exemple.jersey.endpoint.EndpointFood;
+import com.exemple.jersey.exception.UnknownFoodException;
 import com.exemple.jersey.model.Exercise;
 import com.exemple.jersey.model.ExerciseCategory;
+import com.exemple.jersey.model.Food;
+import com.exemple.jersey.model.FoodLink;
 
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.UriInfo;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -40,5 +46,21 @@ public class ServiceExercise {
             }
         }
         return filteredExercise;
+    }
+
+    public Exercise addFood(long exerciseId, long foodId, UriInfo uriInfo) {
+        Exercise exercise = Application.getExercise(exerciseId);
+        Food food = Application.getFood(foodId);
+        if(exercise == null) throw new NotFoundException();
+        if(food == null) throw new UnknownFoodException(String.valueOf(foodId));
+        String uri = uriInfo.getBaseUriBuilder().path(EndpointFood.class).path(String.valueOf(foodId)).build().toString();
+        return Application.addFoodToExercise(exercise, food, uri);
+    }
+
+    public Exercise deleteFood(long exerciseId, long foodId) {
+        Exercise exercise = Application.getExercise(exerciseId);
+        FoodLink foodLink = exercise.obtainFoodLinkFromID(foodId);
+        if(exercise == null || foodLink == null) throw new NotFoundException();
+        return Application.deleteFoodFromExercise(exercise, foodLink);
     }
 }

@@ -1,11 +1,6 @@
 package com.exemple.jersey;
 
-import com.exemple.jersey.model.Exercise;
-import com.exemple.jersey.model.Food;
-import com.exemple.jersey.model.FoodCategory;
-import com.exemple.jersey.model.ExerciseCategory;
-import com.exemple.jersey.model.User;
-import com.exemple.jersey.model.UserSex;
+import com.exemple.jersey.model.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,9 +21,9 @@ public class Application {
         Application.addUser(us3);
 
 
-        Exercise ex1 = new Exercise("Un test", ExerciseCategory.WEIGHT_LOSS, us1);
-        Exercise ex2 = new Exercise("Un autre test", ExerciseCategory.WEIGHT_GAIN, us1);
-        Exercise ex3 = new Exercise("Un dernier test", ExerciseCategory.SECHE, us1);
+        Exercise ex1 = new Exercise("Un test", "Description of the 1st exercise", ExerciseCategory.WEIGHT_LOSS, us1);
+        Exercise ex2 = new Exercise("Un autre test", "Description of the 2nd exercise", ExerciseCategory.WEIGHT_GAIN, us1);
+        Exercise ex3 = new Exercise("Un dernier test", "Description of the 3rd exercise", ExerciseCategory.SECHE, us1);
 
         Application.addExercise(ex1);
         Application.addExercise(ex2);
@@ -40,6 +35,8 @@ public class Application {
         Application.addFood(f1);
         Application.addFood(f2);
         Application.addFood(f3);
+
+        Application.addFoodToExercise(ex1,f1, "http://localhost:8080/SOA_TASK_3_war_exploded/rest/food/1");
     }
 
     private static HashMap<Long, Exercise> exerciseList;
@@ -124,6 +121,16 @@ public class Application {
     public static Food updateFood (Food food) {     //POST
         Application.foodList.put(food.getId(),food);
         return food;
+    }
+
+    public static Exercise addFoodToExercise(Exercise exercise, Food food, String uri) {
+        exercise.addFood(uri, food);
+        return exercise;
+    }
+
+    public static Exercise deleteFoodFromExercise(Exercise exercise, FoodLink foodLink) {
+        exercise.deleteFood(foodLink);
+        return exercise;
     }
 
     /********** END-FOOD **********/
