@@ -1,5 +1,6 @@
 package com.exemple.jersey.endpoint;
 
+import com.exemple.jersey.exception.InvalidFoodException;
 import com.exemple.jersey.model.Food;
 import com.exemple.jersey.model.FoodCategory;
 import com.exemple.jersey.service.ServiceFood;
@@ -37,6 +38,16 @@ public class EndpointFood {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok().entity(food).build();
+    }
+
+    @GET
+    @Path("/{name}/calories")
+    public Response getFoodCalorie(@PathParam("name") String name) {
+        Food food = serviceFood.getFoodByName(name);
+        if(food == null) {
+            throw new InvalidFoodException(name);
+        }
+        return Response.ok().entity("Calories for "+name+" : "+food.getCalories()).build();
     }
 
     @PUT

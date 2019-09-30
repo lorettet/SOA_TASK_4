@@ -5,8 +5,7 @@ import com.exemple.jersey.model.Food;
 import com.exemple.jersey.model.FoodCategory;
 import com.exemple.jersey.model.User;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class Application {
 
@@ -72,6 +71,18 @@ public class Application {
 
     public static Food getFood (long id) {      //GET
         return Application.foodList.get(id);
+    }
+
+    public static Food getFoodByName (String name) {      //GET
+        List<Food> foodList = new ArrayList(Application.foodList.values());
+        Iterator it = foodList.iterator();
+        while(it.hasNext()) {
+            Food food = (Food) it.next();
+            if(food.getName().equals(name)) {
+                return food;
+            }
+        }
+        return null;
     }
 
     public static Food addFood(Food food){      //PUT
