@@ -23,8 +23,8 @@ public class Application {
         Application.addUser(us3);
 
 
-        Exercise ex1 = new Exercise("Un test", ExerciseCategory.WEIGTH_LOSS, us1);
-        Exercise ex2 = new Exercise("Un autre test", ExerciseCategory.WEIGTH_GAIN, us1);
+        Exercise ex1 = new Exercise("Un test", ExerciseCategory.WEIGHT_LOSS, us1);
+        Exercise ex2 = new Exercise("Un autre test", ExerciseCategory.WEIGHT_GAIN, us1);
         Exercise ex3 = new Exercise("Un dernier test", ExerciseCategory.SECHE, us1);
 
         Application.addExercise(ex1);

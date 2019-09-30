@@ -57,7 +57,7 @@ public class EndpointExercise {
         }
         if(ex.getCategory() == null)
         {
-            throw new InvalidExerciseCategoryException("null");
+            throw new InvalidExerciseCategoryException("see /rest/exercise/category");
         }
         return Response.ok().entity(serviceExercise.addExercise(ex)).build();
     }

@@ -1,8 +1,7 @@
 package com.exemple.jersey.model;
 
 public enum ExerciseCategory {
-    WEIGTH_GAIN,
-    WEIGTH_LOSS,
+    WEIGHT_GAIN,
+    WEIGHT_LOSS,
     SECHE;
-
 }
