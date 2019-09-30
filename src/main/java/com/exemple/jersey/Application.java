@@ -1,6 +1,8 @@
 package com.exemple.jersey;
 
 import com.exemple.jersey.model.Exercise;
+import com.exemple.jersey.model.Food;
+import com.exemple.jersey.model.FoodCategory;
 import com.exemple.jersey.model.ExerciseCategory;
 import com.exemple.jersey.model.User;
 import com.exemple.jersey.model.UserSex;
@@ -13,6 +15,7 @@ public class Application {
     static {
         Application.exerciseList = new HashMap<Long, Exercise>();
         Application.userList = new HashMap<Long, User>();
+        Application.foodList = new HashMap<Long, Food>();
 
         User us1 = new User("Romain", "Kuss-Brieke", 22, 69, UserSex.MAN, "login", "123456");
         User us2 = new User("Théo", "Lorette-Froidevaux", 40, 80, UserSex.MAN, "login", "azerty");
@@ -30,11 +33,20 @@ public class Application {
         Application.addExercise(ex1);
         Application.addExercise(ex2);
         Application.addExercise(ex3);
+
+        Food f1 = new Food(FoodCategory.CARBOHYDRATES,"French fries",100);
+        Food f2 = new Food(FoodCategory.MEATS,"Salmon",200);
+        Food f3 = new Food(FoodCategory.FRUITS,"BANANA",99);
+        Application.addFood(f1);
+        Application.addFood(f2);
+        Application.addFood(f3);
     }
 
     private static HashMap<Long, Exercise> exerciseList;
 
     private static HashMap<Long, User> userList;
+
+    private static HashMap<Long, Food> foodList;
 
     public static Collection<Exercise> getExerciseList() {
         return exerciseList.values();
@@ -88,4 +100,31 @@ public class Application {
         return null;
     }
 
+
+    /********** FOOD **********/
+
+    public static Collection<Food> getFoodList () {     //GET
+        return foodList.values();
+    }
+
+    public static Food getFood (long id) {      //GET
+        return Application.foodList.get(id);
+    }
+
+    public static Food addFood(Food food){      //PUT
+        food.setId(Application.foodList.size()+1);
+        Application.foodList.put(food.getId(), food);
+        return food;
+    }
+
+    public static void deleteFood(Food food) {      //DELETE
+        Application.foodList.remove(food.getId());
+    }
+
+    public static Food updateFood (Food food) {     //POST
+        Application.foodList.put(food.getId(),food);
+        return food;
+    }
+
+    /********** END-FOOD **********/
 }
