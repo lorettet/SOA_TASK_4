@@ -11,6 +11,7 @@
   <title>Simple Jersey</title>
 </head>
 <body>
-<p><a href="rest/exercises">Exercises</a>
+<p><a href="rest/exercise">Exercise</a>
+<p><a href="rest/user">User</a>
 </body>
 </html>
