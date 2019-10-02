@@ -6,6 +6,10 @@ import java.util.*;
 
 public class Application {
 
+    private static int lastIdUser = 0;
+    private static int lastIdExercise = 0;
+    private static int lastIdFood = 0;
+
     static {
         Application.exerciseList = new HashMap<Long, Exercise>();
         Application.userList = new HashMap<Long, User>();
@@ -61,7 +65,7 @@ public class Application {
     }
 
     public static User addUser(User user) {
-        user.setId(Application.userList.size() + 1);
+        user.setId(++Application.lastIdUser);
         Application.userList.put(user.getId(), user);
         return user;
     }
@@ -71,7 +75,7 @@ public class Application {
     }
 
     public static Exercise addExercise(Exercise exercise) {
-        exercise.setId((long) (Application.exerciseList.size() + 1));
+        exercise.setId((long) ++Application.lastIdExercise);
         Application.exerciseList.put(exercise.getId(), exercise);
         return exercise;
     }
@@ -120,7 +124,7 @@ public class Application {
     }
 
     public static Food addFood(Food food){      //PUT
-        food.setId(Application.foodList.size()+1);
+        food.setId(++Application.lastIdFood);
         Application.foodList.put(food.getId(), food);
         return food;
     }
