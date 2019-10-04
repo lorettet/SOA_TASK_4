@@ -2,7 +2,6 @@ package com.exemple.jersey.endpoint;
 
 import com.exemple.jersey.exception.InvalidExerciseCategoryException;
 import com.exemple.jersey.exception.MissingArgumentException;
-import com.exemple.jersey.exception.UnknownFoodException;
 import com.exemple.jersey.filter.Logged;
 import com.exemple.jersey.model.Exercise;
 import com.exemple.jersey.model.ExerciseCategory;
@@ -47,7 +46,7 @@ public class EndpointExercise {
         return Response.ok().entity(ex).build();
     }
 
-    @PUT
+    @POST
     @Logged
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addExercise(Exercise ex) {
@@ -64,7 +63,7 @@ public class EndpointExercise {
         return Response.ok().entity(serviceExercise.addExercise(ex)).build();
     }
 
-    @POST
+    @PUT
     @Logged
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateExercise(Exercise ex) {
@@ -97,7 +96,7 @@ public class EndpointExercise {
     }
 
 
-    @PUT
+    @POST
     @Logged
     @Path("/{exerciseId}/food/{foodId}")
     public Exercise addFood(@PathParam("exerciseId") long exerciseId, @PathParam("foodId") long foodId, @Context UriInfo uriInfo)

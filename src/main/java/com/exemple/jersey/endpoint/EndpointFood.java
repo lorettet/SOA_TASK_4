@@ -50,13 +50,13 @@ public class EndpointFood {
         return Response.ok().entity("Calories for "+name+" : "+food.getCalories()).build();
     }
 
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Food addFood(Food food){
         return serviceFood.addFood(food);
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFood (Food food) {
         return Response.ok().entity(serviceFood.updateExercise(food)).build();
