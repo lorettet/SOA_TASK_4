@@ -66,7 +66,7 @@ public class EndpointUser {
         return userSex;
     }
 
-    @POST
+    @PUT
     @Path("/{id}")
     public Response updateUser(@PathParam("id") long id, User user) {
         user.setId(id);
@@ -82,7 +82,7 @@ public class EndpointUser {
         serviceUser.deleteUser(id);
     }
 
-    @PUT
+    @POST
     public User register(
             @QueryParam("login") String login,
             @QueryParam("password") String password,
