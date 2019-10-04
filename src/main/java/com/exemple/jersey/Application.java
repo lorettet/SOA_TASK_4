@@ -15,9 +15,9 @@ public class Application {
         Application.userList = new HashMap<Long, User>();
         Application.foodList = new HashMap<Long, Food>();
 
-        User us1 = new User("Romain", "Kuss-Brieke", 22, 69, UserSex.MAN, "login", "123456");
-        User us2 = new User("Théo", "Lorette-Froidevaux", 40, 80, UserSex.MAN, "login", "azerty");
-        User us3 = new User("John", "LeRouge", 80, 49, UserSex.WOMAN, "login", "password");
+        User us1 = new User("Romain", "Kuss-Brieke", 22, 69, UserSex.MAN, "login", "123456", Role.ADMIN);
+        User us2 = new User("Théo", "Lorette-Froidevaux", 40, 80, UserSex.MAN, "login", "azerty", Role.REGISTERED);
+        User us3 = new User("John", "LeRouge", 80, 49, UserSex.WOMAN, "login", "password", Role.VISITOR);
 
         Application.addUser(us1);
         Application.addUser(us2);

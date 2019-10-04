@@ -1,9 +1,10 @@
 package com.exemple.jersey.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.security.Principal;
 
 @XmlRootElement
-public class User {
+public class User implements Principal {
     private String firstname;
     private String lastname;
     private String login;
@@ -12,8 +13,9 @@ public class User {
     private long age;
     private int weight;
     private UserSex sex;
+    private Role role;
 
-    public User(String firstname, String lastname, long age, int weight, UserSex sex, String login, String password) {
+    public User(String firstname, String lastname, long age, int weight, UserSex sex, String login, String password, Role role) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.age = age;
@@ -21,6 +23,7 @@ public class User {
         this.sex = sex;
         this.login = login;
         this.password = password;
+        this.role = role;
     }
 
     public User(String firstname, String lastname, String login, String password) {
@@ -94,5 +97,18 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    @Override
+    public String getName() {
+        return this.firstname + " " + this.lastname;
     }
 }

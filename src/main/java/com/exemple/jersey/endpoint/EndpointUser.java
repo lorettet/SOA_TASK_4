@@ -2,23 +2,29 @@ package com.exemple.jersey.endpoint;
 
 import com.exemple.jersey.exception.InvalidUserSexException;
 import com.exemple.jersey.filter.UserFilterBean;
+import com.exemple.jersey.model.Role;
 import com.exemple.jersey.model.User;
 import com.exemple.jersey.model.UserSex;
 import com.exemple.jersey.service.ServiceUser;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.Collection;
 
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
+@PermitAll
 public class EndpointUser {
 
     private ServiceUser serviceUser = new ServiceUser();
 
+    @RolesAllowed("VISITOR")
     @GET
     public Collection<User> getUsers(@QueryParam("age") long age, @BeanParam UserFilterBean filterBean) {
         if (age > 0) {
@@ -92,7 +98,7 @@ public class EndpointUser {
             @QueryParam("weight") int weight,
             @QueryParam("sex") UserSex sex
     ) {
-        return serviceUser.addUser(login, password, firstname, lastname, age, weight, sex);
+        return serviceUser.addUser(login, password, firstname, lastname, age, weight, sex, Role.VISITOR);
     }
 
     @GET

@@ -2,6 +2,7 @@ package com.exemple.jersey.service;
 
 import com.exemple.jersey.Application;
 import com.exemple.jersey.filter.UserFilterBean;
+import com.exemple.jersey.model.Role;
 import com.exemple.jersey.model.User;
 import com.exemple.jersey.model.UserSex;
 
@@ -19,9 +20,9 @@ public class ServiceUser {
     }
 
     public User addUser(
-            String login, String password, String firstname, String lastname, long age, int weight, UserSex sex
+            String login, String password, String firstname, String lastname, long age, int weight, UserSex sex, Role role
     ) {
-        return Application.addUser(new User(firstname, lastname, age, weight, sex, login, password));
+        return Application.addUser(new User(firstname, lastname, age, weight, sex, login, password, role));
     }
 
     public boolean deleteUser(long id) {
