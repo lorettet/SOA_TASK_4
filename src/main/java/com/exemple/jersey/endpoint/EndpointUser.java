@@ -1,10 +1,16 @@
 package com.exemple.jersey.endpoint;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.exemple.jersey.Application;
 import com.exemple.jersey.exception.InvalidUserSexException;
 import com.exemple.jersey.filter.UserFilterBean;
 import com.exemple.jersey.model.Role;
 import com.exemple.jersey.model.User;
 import com.exemple.jersey.model.UserSex;
+import com.exemple.jersey.security.NeedAuthentification;
+import com.exemple.jersey.security.NeedJWTToken;
 import com.exemple.jersey.service.ServiceUser;
 
 import javax.annotation.security.PermitAll;
@@ -24,7 +30,7 @@ public class EndpointUser {
 
     private ServiceUser serviceUser = new ServiceUser();
 
-    @RolesAllowed("VISITOR")
+    @NeedJWTToken
     @GET
     public Collection<User> getUsers(@QueryParam("age") long age, @BeanParam UserFilterBean filterBean) {
         if (age > 0) {
@@ -105,13 +111,16 @@ public class EndpointUser {
     @Path("/login")
     public Response login(
             @QueryParam("login") String login,
-            @QueryParam("password") String password,
-            @Context HttpServletRequest req
+            @QueryParam("password") String password
     ) {
         User user = serviceUser.login(login, password);
         if (user != null) {
-            req.getSession().setAttribute("user", user);
-            return Response.ok().entity(user).build();
+
+            Algorithm algorithm = Algorithm.HMAC256(Application.KEY_JWT);
+            String token = JWT.create().withClaim("id", user.getId())
+                    .sign(algorithm);
+            return Response.ok().header("JWT",token).entity(user).build();
+
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

@@ -10,6 +10,8 @@ public class Application {
     private static int lastIdExercise = 0;
     private static int lastIdFood = 0;
 
+    public static final String KEY_JWT = "ThishasTOBEaveryl0ngk3y&alsoQU1t3c0mpl3c4T3D";
+
     static {
         Application.exerciseList = new HashMap<Long, Exercise>();
         Application.userList = new HashMap<Long, User>();

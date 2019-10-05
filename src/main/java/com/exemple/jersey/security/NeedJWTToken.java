@@ -1,4 +1,4 @@
-package com.exemple.jersey.filter;
+package com.exemple.jersey.security;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.ElementType;
@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @NameBinding
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface Logged {
+public @interface NeedJWTToken {
 }

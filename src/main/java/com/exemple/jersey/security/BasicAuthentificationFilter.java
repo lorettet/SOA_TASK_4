@@ -19,7 +19,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 @Provider
-public class SecurityFilter implements ContainerRequestFilter {
+@NeedAuthentification
+public class BasicAuthentificationFilter implements ContainerRequestFilter {
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
     private static final String AUTHORIZATION_HEADER_PREFIX = "Basic ";
 
@@ -41,6 +42,7 @@ public class SecurityFilter implements ContainerRequestFilter {
             String password = tokenizer.nextToken();
             ServiceUser serviceUser = new ServiceUser();
             User user = serviceUser.login(username, password);
+
             if (user != null) {
                 String scheme = requestContext.getUriInfo().getRequestUri().getScheme();
                 requestContext.setSecurityContext(new CustomSecurityContext(user, scheme));
@@ -49,21 +51,21 @@ public class SecurityFilter implements ContainerRequestFilter {
                 if (resMethod.isAnnotationPresent(PermitAll.class)) {
                     return;
                 }
-                if (resMethod.isAnnotationPresent(DenyAll.class)) {
+                else if (resMethod.isAnnotationPresent(DenyAll.class)) {
                     Response response = Response.status(Response.Status.FORBIDDEN).entity(FORBIDDEN_ErrMESSAGE).build();
                     requestContext.abortWith(response);
                 }
-                if (resMethod.isAnnotationPresent(RolesAllowed.class)) {
+                else if (resMethod.isAnnotationPresent(RolesAllowed.class)) {
                    if (Arrays.asList(resMethod.getAnnotation(RolesAllowed.class).value()).contains(user.getRole().toString())) return;
                     Response response = Response.status(Response.Status.UNAUTHORIZED).entity(UNAUTHORIZED_ErrMESSAGE).build();
                     requestContext.abortWith(response);
-                }
+                } else return;
             }
-
-            ErrorMessage errorMessage = new ErrorMessage("User cannot access the resource.", 401, "http://myDocs.org");
-            Response unauthorizedStatus = Response.status(Response.Status.UNAUTHORIZED).entity(errorMessage).build();
-            requestContext.abortWith(unauthorizedStatus);
-
+            return;
         }
+
+        ErrorMessage errorMessage = new ErrorMessage("User cannot access the resource.", 401, "http://myDocs.org");
+        Response unauthorizedStatus = Response.status(Response.Status.UNAUTHORIZED).entity(errorMessage).build();
+        requestContext.abortWith(unauthorizedStatus);
     }
 }

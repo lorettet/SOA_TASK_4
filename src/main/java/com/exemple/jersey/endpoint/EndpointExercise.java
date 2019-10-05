@@ -2,7 +2,6 @@ package com.exemple.jersey.endpoint;
 
 import com.exemple.jersey.exception.InvalidExerciseCategoryException;
 import com.exemple.jersey.exception.MissingArgumentException;
-import com.exemple.jersey.filter.Logged;
 import com.exemple.jersey.model.Exercise;
 import com.exemple.jersey.model.ExerciseCategory;
 import com.exemple.jersey.model.User;
@@ -47,7 +46,6 @@ public class EndpointExercise {
     }
 
     @POST
-    @Logged
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addExercise(Exercise ex) {
         User user = (User) req.getSession().getAttribute("user");
@@ -64,7 +62,6 @@ public class EndpointExercise {
     }
 
     @PUT
-    @Logged
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateExercise(Exercise ex) {
         User user = (User) req.getSession().getAttribute("user");
@@ -77,7 +74,6 @@ public class EndpointExercise {
     }
 
     @DELETE
-    @Logged
     @Path("/{id}")
     public Response deleteExercise(@PathParam("id") long id){
         if(serviceExercise.deleteExercise(id))
@@ -97,7 +93,6 @@ public class EndpointExercise {
 
 
     @POST
-    @Logged
     @Path("/{exerciseId}/food/{foodId}")
     public Exercise addFood(@PathParam("exerciseId") long exerciseId, @PathParam("foodId") long foodId, @Context UriInfo uriInfo)
     {
@@ -105,7 +100,6 @@ public class EndpointExercise {
     }
 
     @DELETE
-    @Logged
     @Path("/{exerciseId}/food/{foodId}")
     public Exercise deleteFood(@PathParam("exerciseId") long exerciseId, @PathParam("foodId") long foodId)
     {
