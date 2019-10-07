@@ -24,8 +24,8 @@ public class BasicAuthentificationFilter implements ContainerRequestFilter {
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
     private static final String AUTHORIZATION_HEADER_PREFIX = "Basic ";
 
-    private static final ErrorMessage FORBIDDEN_ErrMESSAGE = new ErrorMessage("Access blockedfor all users !!!", 403, "http://myDocs.org");
-    private static final ErrorMessage UNAUTHORIZED_ErrMESSAGE = new ErrorMessage("User cannotaccess the resource.", 401, "http://myDocs.org");
+    private static final ErrorMessage FORBIDDEN_ErrMESSAGE = new ErrorMessage("Access blocked for all users !!!", 403, "http://myDocs.org");
+    private static final ErrorMessage UNAUTHORIZED_ErrMESSAGE = new ErrorMessage("User cannot access the resource.", 401, "http://myDocs.org");
 
     @Context
     private ResourceInfo resourceInfo;
@@ -50,20 +50,17 @@ public class BasicAuthentificationFilter implements ContainerRequestFilter {
                 Method resMethod = resourceInfo.getResourceMethod();
                 if (resMethod.isAnnotationPresent(PermitAll.class)) {
                     return;
-                }
-                else if (resMethod.isAnnotationPresent(DenyAll.class)) {
+                } else if (resMethod.isAnnotationPresent(DenyAll.class)) {
                     Response response = Response.status(Response.Status.FORBIDDEN).entity(FORBIDDEN_ErrMESSAGE).build();
                     requestContext.abortWith(response);
-                }
-                else if (resMethod.isAnnotationPresent(RolesAllowed.class)) {
-                   if (Arrays.asList(resMethod.getAnnotation(RolesAllowed.class).value()).contains(user.getRole().toString())) return;
+                } else if (resMethod.isAnnotationPresent(RolesAllowed.class)) {
+                    if (Arrays.asList(resMethod.getAnnotation(RolesAllowed.class).value()).contains(user.getRole().toString()))
+                        return;
                     Response response = Response.status(Response.Status.UNAUTHORIZED).entity(UNAUTHORIZED_ErrMESSAGE).build();
                     requestContext.abortWith(response);
                 } else return;
             }
-            return;
         }
-
         ErrorMessage errorMessage = new ErrorMessage("User cannot access the resource.", 401, "http://myDocs.org");
         Response unauthorizedStatus = Response.status(Response.Status.UNAUTHORIZED).entity(errorMessage).build();
         requestContext.abortWith(unauthorizedStatus);

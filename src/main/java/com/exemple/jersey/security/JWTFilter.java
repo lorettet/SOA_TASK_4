@@ -34,11 +34,10 @@ import java.util.StringTokenizer;
 @NeedJWTToken
 public class JWTFilter implements ContainerRequestFilter {
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
-    private static final String AUTHORIZATION_HEADER_PREFIX = "Basic ";
     private static final String AUTHORIZATION_JWT_HEADER_PREFIX = "Bearer ";
 
-    private static final ErrorMessage FORBIDDEN_ErrMESSAGE = new ErrorMessage("Access blockedfor all users !!!", 403, "http://myDocs.org");
-    private static final ErrorMessage UNAUTHORIZED_ErrMESSAGE = new ErrorMessage("User cannotaccess the resource.", 401, "http://myDocs.org");
+    private static final ErrorMessage FORBIDDEN_ErrMESSAGE = new ErrorMessage("Access blocked for all users !!!", 403, "http://myDocs.org");
+    private static final ErrorMessage UNAUTHORIZED_ErrMESSAGE = new ErrorMessage("User cannot access,create or modify the resource.", 401, "http://myDocs.org");
     private static final ErrorMessage JWT_ERROR = new ErrorMessage("JWT Token has not been verified", 401, "");
     private static final ErrorMessage JWT_INVALID = new ErrorMessage("JWT Token is not JSON", 400, "");
 
@@ -56,8 +55,8 @@ public class JWTFilter implements ContainerRequestFilter {
                 Algorithm algorithm = Algorithm.HMAC256(Application.KEY_JWT);
                 JWTVerifier verifier = JWT.require(algorithm)
                         .build(); //Reusable verifier instance
-                DecodedJWT jwt = verifier.verify(jwtToken);
-            } catch (JWTVerificationException exception){
+                verifier.verify(jwtToken);
+            } catch (JWTVerificationException exception) {
                 Response response = Response.status(Response.Status.UNAUTHORIZED).entity(JWT_ERROR).build();
                 requestContext.abortWith(response);
                 return;
@@ -69,7 +68,7 @@ public class JWTFilter implements ContainerRequestFilter {
                 DecodedJWT jwt = JWT.decode(jwtToken);
                 JsonObject jsonToken = new JsonParser().parse(new String(Base64.getDecoder().decode(jwt.getPayload()))).getAsJsonObject();
                 user = serviceUser.getUser(jsonToken.get("id").getAsLong());
-            } catch (JWTDecodeException exception){
+            } catch (JWTDecodeException exception) {
                 Response response = Response.status(Response.Status.UNAUTHORIZED).entity(JWT_INVALID).build();
                 requestContext.abortWith(response);
                 return;
@@ -84,21 +83,17 @@ public class JWTFilter implements ContainerRequestFilter {
                     Response response = Response.status(Response.Status.FORBIDDEN).entity(FORBIDDEN_ErrMESSAGE).build();
                     requestContext.abortWith(response);
                     return;
-                }
-                else if (resMethod.isAnnotationPresent(RolesAllowed.class)) {
-                    if (Arrays.asList(resMethod.getAnnotation(RolesAllowed.class).value()).contains(user.getRole().toString())) return;
+                } else if (resMethod.isAnnotationPresent(RolesAllowed.class)) {
+                    if (Arrays.asList(resMethod.getAnnotation(RolesAllowed.class).value()).contains(user.getRole().toString()))
+                        return;
                     Response response = Response.status(Response.Status.UNAUTHORIZED).entity(UNAUTHORIZED_ErrMESSAGE).build();
                     requestContext.abortWith(response);
                     return;
-                }
-                else if (resMethod.isAnnotationPresent(PermitAll.class)) {
+                } else if (resMethod.isAnnotationPresent(PermitAll.class)) {
                     return;
-                }
-                else return;
+                } else return;
             }
-
         }
-
         ErrorMessage errorMessage = new ErrorMessage("User cannot access the resource.", 401, "http://myDocs.org");
         Response unauthorizedStatus = Response.status(Response.Status.UNAUTHORIZED).entity(errorMessage).build();
         requestContext.abortWith(unauthorizedStatus);

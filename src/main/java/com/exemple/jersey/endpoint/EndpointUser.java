@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.util.Collection;
 
-@Path("/user")
+@Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @PermitAll
 public class EndpointUser {
@@ -31,6 +31,7 @@ public class EndpointUser {
     private ServiceUser serviceUser = new ServiceUser();
 
     @NeedJWTToken
+    @RolesAllowed("ADMIN")
     @GET
     public Collection<User> getUsers(@QueryParam("age") long age, @BeanParam UserFilterBean filterBean) {
         if (age > 0) {
@@ -45,6 +46,8 @@ public class EndpointUser {
     }
 
     @GET
+    @NeedJWTToken
+    @RolesAllowed("ADMIN")
     @Path("/{id}")
     public Response getUser(@PathParam("id") long id) {
         User user = serviceUser.getUser(id);
@@ -79,6 +82,7 @@ public class EndpointUser {
     }
 
     @PUT
+    @NeedJWTToken
     @Path("/{id}")
     public Response updateUser(@PathParam("id") long id, User user) {
         user.setId(id);
@@ -89,12 +93,16 @@ public class EndpointUser {
     }
 
     @DELETE
+    @NeedJWTToken
+    @RolesAllowed("ADMIN")
     @Path("/{id}")
     public void deleteUser(@PathParam("id") long id) {
         serviceUser.deleteUser(id);
     }
 
     @POST
+    @NeedJWTToken
+    @RolesAllowed("ADMIN")
     public User register(
             @QueryParam("login") String login,
             @QueryParam("password") String password,
@@ -119,7 +127,7 @@ public class EndpointUser {
             Algorithm algorithm = Algorithm.HMAC256(Application.KEY_JWT);
             String token = JWT.create().withClaim("id", user.getId())
                     .sign(algorithm);
-            return Response.ok().header("JWT",token).entity(user).build();
+            return Response.ok().header("JWT", token).entity(user).build();
 
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();

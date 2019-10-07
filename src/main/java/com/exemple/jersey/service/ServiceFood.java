@@ -19,7 +19,7 @@ public class ServiceFood {
 
     public boolean deleteFood(long id) {
         Food food = Application.getFood(id);
-        if(food == null) return false;
+        if (food == null) return false;
         Application.deleteFood(food);
         return true;
     }
@@ -39,8 +39,8 @@ public class ServiceFood {
     public Collection<Food> getAllFood(FoodCategory foodCategory) {
         Collection<Food> allFood = Application.getFoodList();
         ArrayList<Food> filteredFood = new ArrayList<Food>();
-        for(Food food : allFood){
-            if(food.getCategory() == foodCategory){
+        for (Food food : allFood) {
+            if (food.getCategory() == foodCategory) {
                 filteredFood.add(food);
             }
         }
