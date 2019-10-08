@@ -51,7 +51,7 @@ public class JWTFilter implements ContainerRequestFilter {
             jwtToken = jwtToken.replaceFirst(AUTHORIZATION_JWT_HEADER_PREFIX, "");
             try {
                 Algorithm algorithm = Algorithm.HMAC256(Application.KEY_JWT);
-                JWTVerifier verifier = JWT.require(algorithm).
+                JWTVerifier verifier = JWT.require(algorithm)
                         .build(); //Reusable verifier instance
                 verifier.verify(jwtToken);
             } catch (JWTVerificationException exception) {
