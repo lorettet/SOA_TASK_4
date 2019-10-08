@@ -1,7 +1,5 @@
 package com.exemple.jersey.model;
 
-import com.exemple.jersey.Application;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;

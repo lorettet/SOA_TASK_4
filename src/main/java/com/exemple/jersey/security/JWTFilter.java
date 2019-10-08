@@ -5,7 +5,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.impl.JWTParser;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.exemple.jersey.Application;
 import com.exemple.jersey.exception.ErrorMessage;
@@ -28,7 +27,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-import java.util.StringTokenizer;
 
 @Provider
 @NeedJWTToken
@@ -53,7 +51,7 @@ public class JWTFilter implements ContainerRequestFilter {
             jwtToken = jwtToken.replaceFirst(AUTHORIZATION_JWT_HEADER_PREFIX, "");
             try {
                 Algorithm algorithm = Algorithm.HMAC256(Application.KEY_JWT);
-                JWTVerifier verifier = JWT.require(algorithm)
+                JWTVerifier verifier = JWT.require(algorithm).
                         .build(); //Reusable verifier instance
                 verifier.verify(jwtToken);
             } catch (JWTVerificationException exception) {

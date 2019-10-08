@@ -1,7 +1,6 @@
 package com.exemple.jersey.security;
 
 import com.exemple.jersey.exception.ErrorMessage;
-import com.exemple.jersey.model.Role;
 import com.exemple.jersey.model.User;
 import com.exemple.jersey.service.ServiceUser;
 
@@ -16,7 +15,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.StringTokenizer;
 
 @Provider
 @NeedAuthentification

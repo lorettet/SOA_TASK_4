@@ -4,7 +4,6 @@ import com.exemple.jersey.exception.InvalidFoodException;
 import com.exemple.jersey.model.Food;
 import com.exemple.jersey.model.FoodCategory;
 import com.exemple.jersey.security.NeedAuthentification;
-import com.exemple.jersey.security.NeedJWTToken;
 import com.exemple.jersey.service.ServiceFood;
 
 import javax.annotation.security.PermitAll;

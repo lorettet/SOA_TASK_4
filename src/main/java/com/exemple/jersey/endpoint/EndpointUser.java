@@ -2,25 +2,20 @@ package com.exemple.jersey.endpoint;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.exemple.jersey.Application;
 import com.exemple.jersey.exception.InvalidUserSexException;
 import com.exemple.jersey.filter.UserFilterBean;
 import com.exemple.jersey.model.Role;
 import com.exemple.jersey.model.User;
 import com.exemple.jersey.model.UserSex;
-import com.exemple.jersey.security.NeedAuthentification;
 import com.exemple.jersey.security.NeedJWTToken;
 import com.exemple.jersey.service.ServiceUser;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 import java.util.Collection;
 
 @Path("/users")
@@ -59,6 +54,7 @@ public class EndpointUser {
 
     @GET
     @Path("/{userSex}/weight")
+    @RolesAllowed("REGISTERED")
     public Response getWeightCompareToSex(@PathParam("userSex") String sex) {
         UserSex userSex = checkUserSex(sex);
         return Response.ok().entity(serviceUser.getAllUserWeightForASex(userSex)).build();
@@ -66,6 +62,7 @@ public class EndpointUser {
 
     @GET
     @Path("/{userSex}/age")
+    @RolesAllowed("REGISTERED")
     public Response getAgeCompareToSex(@PathParam("userSex") String sex) {
         UserSex userSex = checkUserSex(sex);
         return Response.ok().entity(serviceUser.getAllUserAgeForASex(userSex)).build();
