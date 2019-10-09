@@ -98,8 +98,6 @@ public class EndpointUser {
     }
 
     @POST
-    @NeedJWTToken
-    @RolesAllowed("ADMIN")
     public User register(
             @QueryParam("login") String login,
             @QueryParam("password") String password,
